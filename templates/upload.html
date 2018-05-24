@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="author" content="HistoQc"/>
+	<meta name="description" content="HistoQc"/>
+	<title>HistoQC - Upload</title>
+
+	<!-- Bootstrap Core CSS -->
+	<link rel="stylesheet" type="text/css" href="../static/libs/css/bootstrap.min.css"/>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="../static/css/upload.css"/>
+
+	<script src="../static/scripts/upload.js"></script>
+</head>
+
+<body>
+	<header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom">
+		<h5 id="page-title" class="my-0 mr-md-3 font-weight-normal"><a href="/"><strong>HistoQc</strong></a></h5>
+		<nav class="my-2 my-md-0 ml-md-3">
+			<a class="p-2 text-dark ml-md-3" href="/upload"> Upload </a>
+			<a class="p-2 text-dark ml-md-3" href="/gallery"> Gallery </a>
+			<a class="p-2 text-dark ml-md-3" href="/about"> About </a>
+		</nav>
+	</header>
+
+	<div class="container">
+		<form action="" onsubmit="return valid(this)" enctype='multipart/form-data' method='POST'>
+			<div class="input-group mb-4 pb-4 mt-5" id="file-input">
+				<div class="custom-file">
+					<input type="file" name="file" multiple="multiple" class="custom-file-input" id="inputGroupFile01">
+					<label class="custom-file-label" for="inputGroupFile01">Choose file(s)</label>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputTissueType" class="col-sm-2 col-form-label">Tissue Type</label>
+				<div class="col-sm-10">
+					<input type="text" name="Tissue" class="form-control" id="inputTissueType" placeholder="Please type in the tissue type">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputArtifacts" class="col-sm-2 col-form-label">Artifacts Type</label>
+				<div class="col-sm-10">
+					<input type="text" name="Artifacts" class="form-control" id="inputArtifacts" placeholder="Please type in the artifacts type">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputStain" class="col-sm-2 col-form-label">Stain Type</label>
+				<div class="col-sm-10">
+					<input type="text" name="Stain" class="form-control" id="inputStain" placeholder="Please type in the stain type">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputTissueType" class="col-sm-2 col-form-label">Preparation type</label>
+				<div class="col-sm-10">
+					<select id="inputState" class="form-control" name="Preparation">
+						<option selected>Choose...</option>
+						<option>frozen</option>
+						<option>ffpe</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputTissueType" class="col-sm-2 col-form-label">Specimen type</label>
+				<div class="col-sm-10">
+					<select id="inputState" class="form-control" name="Specimen">
+						<option selected>Choose...</option>
+						<option>resection</option>
+						<option>biopsy</option>
+						<option>TMA</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputMagnification" class="col-sm-2 col-form-label">Base Magnification</label>
+				<div class="col-sm-10">
+					<input type="text" name="magnification" class="form-control" id="inputMagnification" placeholder="Please type in the base magnification of the slide(s)">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputScanner" class="col-sm-2 col-form-label">Scanner</label>
+				<div class="col-sm-10">
+					<input type="text" name="Scanner" class="form-control" id="inputScanner" placeholder="Please type in the type of scanner">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputComments" class="col-sm-2 col-form-label">Comments</label>
+				<div class="col-sm-10">
+					<input type="text" name="Comments" class="form-control" id="inputComments" placeholder="Please type in your comments">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputSlideCreationDate" class="col-sm-2 col-form-label">Slide Creation Date</label>
+				<div class="col-sm-10">
+					<input type="text" name="date" class="form-control" id="inputSlideCreationDate" placeholder="Please type in the date of creation of the uploaded slide (MM/DD/YYYY)">
+				</div>
+			</div>
+			<div class="form-group row">
+				<label for="inputEmail" class="col-sm-2 col-form-label">Contact Info</label>
+				<div class="col-sm-10">
+					<input type="text" name="Email" class="form-control" id="inputEmail" placeholder="Your contact information (email)">
+				</div>
+			</div>
+			<div id="confirm-input" class="form-group mt-4 pt-4">
+				<div class="form-check">
+					<input class="form-check-input" name="confirm" type="checkbox" onclick="agree();" id="confirm">
+					<label class="form-check-label" for="confirm">
+						Please confirm that the slide has been properly anonymized.
+					</label>
+				</div>
+			</div>
+			<input type="submit" value="Upload" disabled="disabled" id="submit" class="btn btn-primary btn-block">
+		</form>
+	</div>
+
+</body>
+</html>

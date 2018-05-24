@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="../static/js/jquery.js"></script>
+    <script type="text/javascript" charset="utf8" src="../static/js/jquery.dataTables.js"></script>
+    <script>
+    $(document).ready(function () {
+        $('#table_id_example').DataTable({
+            "searching": true,
+            "bFilter": true,
+        });
+    });
+
+
+
+</script>
+</head>
+<body>
+<table id="table_id_example" class="display">
+    <thead>
+    <tr>
+        <th>Column1</th>
+        <th>Column2</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Row1Data1</td>
+        <td>Row1Data2</td>
+    </tr>
+    <tr>
+        <td>Row2Data1</td>
+        <td>Row2Data2</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

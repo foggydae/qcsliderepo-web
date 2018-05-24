@@ -1,0 +1,11 @@
+html, body {
+  line-height: 1; /* same as bootstrap.css */
+}
+
+#file-input {
+	border-bottom: 1px dashed #aaa;
+}
+
+#confirm-input {
+	border-top: 1px dashed #aaa;
+}

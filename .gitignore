@@ -1,3 +1,2 @@
 *.DS_Store
-static/files/*.*
-static/files/thumbs/*
+static/files/

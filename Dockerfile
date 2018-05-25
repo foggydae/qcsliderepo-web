@@ -9,10 +9,10 @@ FROM ubuntu:latest
 RUN apt-get update
 RUN apt-get install -y python3.6 python3.6-dev python3-pip
 RUN apt-get install -y libmysqlclient-dev
-RUN python3.6 -m pip install pip --upgrade
 RUN apt-get install -y openslide-tools
 RUN apt-get install -y git
 RUN apt-get install -y vim
+RUN python3.6 -m pip install pip --upgrade
 RUN mkdir /opt/histoqc
 WORKDIR /opt/histoqc
 ADD requirements.txt /opt/histoqc/

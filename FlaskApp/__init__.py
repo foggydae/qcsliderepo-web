@@ -22,16 +22,16 @@ if sys.getdefaultencoding() != default_encoding:
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'Youneverknowqc'
-app.config["UPLOAD_FOLDER"] = 'static/data/'
-app.config["THUMBNAIL_FOLDER"] = 'static/data/thumbnail/'
+app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path,'static/data/')
+app.config["THUMBNAIL_FOLDER"] = os.path.join(app.root_path,'static/data/thumbnail/')
 
 ALLOWED_EXTENSIONS = set(['svs', 'tif', 'ndpi', 'vms', 'vmu', 'scn', 'mrxs', 'tiff', 'svslide', "bif"])
 
 DB_NAME = 'histoqc'
 DB_IP = 'localhost'
 DB_PORT = 3306
-DB_USER = 'ren.zuo'
-DB_PASSWORD = 'ZQTTzr1995'
+DB_USER = 'root'
+DB_PASSWORD = 'histoqcweb'
 DB_TABLE = 'file'
 
 mysql_db = MysqlTool(DB_NAME, DB_IP, DB_PORT, DB_USER, DB_PASSWORD)
@@ -144,8 +144,8 @@ def about():
 
 
 if __name__ == '__main__':
-	app.run(
-		host = '0.0.0.0',
-		port = 15000,
-		debug = True
-	)
+	app.run()
+#		host = '0.0.0.0',
+#		port = 15000,
+#		debug = True
+#	)

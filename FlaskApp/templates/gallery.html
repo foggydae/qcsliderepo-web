@@ -64,7 +64,7 @@
 							<td><input type="checkbox" name="checkList" id={{'check'+loop.index|string}}></td>
 							{% for item in file %}
 								{% if  loop.index == 1 %}
-									<td><img src="{{thumb_path + item}}" class="thumb"></td>
+									<td><img src="{{'static/data/thumbnail/' + item}}" class="thumb"></td>
 								{% elif  loop.index == 2 %}
 									<td class="url"><a href="/download/{{item}}">{{item}} </a> </td>
 								{% else %}

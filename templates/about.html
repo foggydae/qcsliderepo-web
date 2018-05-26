@@ -4,9 +4,9 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<meta name="author" content="HistoQc"/>
-	<meta name="description" content="HistoQc"/>
-	<title>HistoQC - About</title>
+	<meta name="author" content="QCSlideRepository"/>
+	<meta name="description" content="QCSlideRepository"/>
+	<title>QCSlideRepository - About</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" type="text/css" href="../static/libs/css/bootstrap.min.css"/>
@@ -16,15 +16,26 @@
 
 <body>
 	<header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom">
-		<h5 id="page-title" class="my-0 mr-md-3 font-weight-normal"><a href="/"><strong>HistoQc</strong></a></h5>
+		<h5 id="page-title" class="my-0 mr-md-3 font-weight-normal"><a href="/"><strong>QCSlideRepository</strong></a></h5>
 		<nav class="my-2 my-md-0 ml-md-3">
-			<a class="p-2 text-dark ml-md-3" href="/upload"> Upload </a>
 			<a class="p-2 text-dark ml-md-3" href="/gallery"> Gallery </a>
+			<a class="p-2 text-dark ml-md-3" href="/upload"> Upload </a>
 			<a class="p-2 text-dark ml-md-3" href="/about"> About </a>
 		</nav>
 	</header>
 
 	<div class="container pt-md-5">
-		<h5>About Us</h5>
+		<h3>About Us</h3>
+		<div id="text-first-block" class="mt-4 pt-4 mb-4 pb-4">
+			<p>Artifacts in digital pathology slides present a significant challenge for pathologists and especially computational algorithms. This repository was created to facilitate the sharing of the various appearance of artifacts for two major purposes:</p>
+			<div id="text-purpose-block">
+				<p> (a) to use as a didactic tool for new pathologists, in hopes of exposing them to artifacts which may be rare in clinical practices, and </p>
+				<p> (b) providing benchmark datasets for computational approaches both in detecting artifacts as well as determining the robustness of algorithms to the presence of artifacts.</p>
+			</div>
+		</div>
+		<div>
+			<p>This repository is maintained by <a href="http://ccipd.case.edu">The Center of Computational Imaging and Personalized Diagnostics (CCIPD) at Case Western Reserve University</a>.</p>
+			<p>For any questions, please feel free to reach out to us: andrew.janowczyk@case.edu</p>
+		</div>
 	</div>
 </body>

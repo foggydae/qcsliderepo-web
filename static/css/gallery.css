@@ -29,3 +29,28 @@ table {
 	border-top: 1px dashed #aaa;
 	border-bottom: 1px dashed #aaa;
 }
+
+#download-btn-container,
+#url-list-container {
+	display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#download {
+	width: 200px;
+}
+
+#copy-btn {
+	width: 200px;
+}
+#download-instruction-block {
+	display: none;
+	width: 100%;
+	padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    border-radius: 3px;
+    border: 1px solid #eee;
+    background-color: #f8f8f8;
+}

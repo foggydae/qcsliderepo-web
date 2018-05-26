@@ -1,33 +1,31 @@
 # coding:utf-8
 
-from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory
-from werkzeug.utils import secure_filename
 import os
-import glob
 import datetime
-import time
-
-import openslide
-from skimage import io
-import numpy as np
 import sys
+import numpy as np
+from skimage import io
 from PIL import Image
 
-from MysqlTool import MysqlTool
-import sys
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory
+from werkzeug.utils import secure_filename
+
+import openslide
+
+from lib.MysqlTool import MysqlTool
+from lib.upload_file import uploadfile
+
 default_encoding = 'utf-8'
 if sys.getdefaultencoding() != default_encoding:
 	reload(sys)
 	sys.setdefaultencoding(default_encoding)
 
+app = Flask(__name__)
+app.config["SECRET_KEY"] = 'Youneverknowqc'
+app.config["UPLOAD_FOLDER"] = 'static/data/'
+app.config["THUMBNAIL_FOLDER"] = 'static/data/thumbnail/'
 
 ALLOWED_EXTENSIONS = set(['svs', 'tif', 'ndpi', 'vms', 'vmu', 'scn', 'mrxs', 'tiff', 'svslide', "bif"])
-
-UPLOAD_PATH = 'static/files'
-THUMB_PATH = 'static/files/thumbs'
-DOWNLOAD_PATH = 'static/files'
-
-PATTERN = '*'
 
 DB_NAME = 'histoqc'
 DB_IP = 'localhost'
@@ -36,24 +34,46 @@ DB_USER = 'ren.zuo'
 DB_PASSWORD = 'ZQTTzr1995'
 DB_TABLE = 'file'
 
+mysql_db = MysqlTool(DB_NAME, DB_IP, DB_PORT, DB_USER, DB_PASSWORD)
+
+
+if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+	os.makedirs(app.config["UPLOAD_FOLDER"])
+if not os.path.exists(app.config["THUMBNAIL_FOLDER"]):
+	os.makedirs(app.config["THUMBNAIL_FOLDER"])
+
 
 def allowed_file(filename):
 	return '.' in filename and \
 			filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def gen_file_name(filename):
+	i = 1
+	while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
+		name, extension = os.path.splitext(filename)
+		filename = '%s_%s%s' % (name, str(i), extension)
+		i += 1
+	return filename
+
+
 def process(filename, metadata):
-	file_path = os.path.join(UPLOAD_PATH, filename)
+	file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+	name, extension = os.path.splitext(filename)
+	thumbname = '%s%s' % (name, '.png')
+	thumb_path = os.path.join(app.config["THUMBNAIL_FOLDER"], thumbname)
+
 	parsed_file = openslide.OpenSlide(file_path)
 	thumb = np.array(parsed_file.get_thumbnail((100, 100)))
-	io.imsave(os.path.join(THUMB_PATH, filename[:-4]+'.png'), thumb)
-	[width, height] = parsed_file.dimensions
+	io.imsave(thumb_path, thumb)
+
+	width, height = parsed_file.dimensions
 	fsize = os.path.getsize(file_path)
 	fsize = round(fsize / float(1024 * 1024 * 1024), 2)
 
-	Url = filename[:-4]+'.png'
+	Url = thumbname
 	FileName = filename
-	UploadDate = datetime.date.today().strftime("%Y%m%d")
+	UploadDate = datetime.date.today().strftime("%m/%d/%Y")
 	UploaderContactInfo = metadata.get('Email')
 	TissueType = metadata.get('Tissue')
 	SlideCreationDate = metadata.get('date')
@@ -67,23 +87,14 @@ def process(filename, metadata):
 	Scanner = metadata.get('Scanner')
 	PreparationType = metadata.get('Preparation')
 	SpecimenType = metadata.get('Specimen')
-	mysql_tool.insert(DB_TABLE, [Url, FileName, UploadDate, UploaderContactInfo, TissueType, SlideCreationDate, BaseMagnification, ArtifactsTypes,
+
+	mysql_db.insert(DB_TABLE, [Url, FileName, UploadDate, UploaderContactInfo, TissueType, SlideCreationDate, BaseMagnification, ArtifactsTypes,
 			   StainType, Comments, ImageSizeInPixels, ImageSizeInGB, FileType, Scanner, PreparationType, SpecimenType])
-
-
-app = Flask(__name__)
-mysql_tool = MysqlTool(DB_NAME, DB_IP, DB_PORT, DB_USER, DB_PASSWORD)
-#app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
 @app.route('/')
 def histoqc():
-	return render_template('histoqc.html')
-
-
-@app.route('/about')
-def about():
-	return render_template('about.html')
+	return redirect('/gallery')
 
 
 @app.route('/upload', methods=['POST', 'GET'])
@@ -93,6 +104,7 @@ def upload():
 			return jsonify({'code': -1, 'filename': '', 'msg': 'No file part.'})
 		
 		fileList = request.files.getlist('file')
+		print(fileList)
 		metadata = request.form
 		for file in fileList:
 			if file.filename == '':
@@ -100,12 +112,10 @@ def upload():
 			else:
 				try:
 					origin_file_name = file.filename
-					filename = origin_file_name
+					filename = secure_filename(origin_file_name)
+					filename = gen_file_name(filename)
 
-					if not os.path.exists(UPLOAD_PATH):
-						os.makedirs(UPLOAD_PATH)
-
-					file.save(os.path.join(UPLOAD_PATH, filename))
+					file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 					process(filename, metadata)
 
 				except Exception as e:
@@ -118,13 +128,18 @@ def upload():
 
 @app.route("/download/<filename>", methods=['GET'])
 def download_file(filename):
-	return send_from_directory(DOWNLOAD_PATH, filename, as_attachment=True)
+	return send_from_directory(app.config["UPLOAD_FOLDER"], filename, as_attachment=True)
 
 
 @app.route('/gallery')
 def gallery():
-	fileList = mysql_tool.selectAll(DB_TABLE)
-	return render_template('gallery.html', files=fileList)
+	fileList = mysql_db.selectAll(DB_TABLE)
+	return render_template('gallery.html', files=fileList, thumb_path=app.config["THUMBNAIL_FOLDER"])
+
+
+@app.route('/about')
+def about():
+	return render_template('about.html')
 
 
 if __name__ == '__main__':

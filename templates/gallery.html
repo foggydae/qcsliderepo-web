@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<meta name="author" content="HistoQc"/>
-	<meta name="description" content="HistoQc"/>
-	<title>HistoQC - Gallery</title>
+	<meta name="author" content="QCSlideRepository"/>
+	<meta name="description" content="QCSlideRepository"/>
+	<title>QCSlideRepository - Gallery</title>
 
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" type="text/css" href="../static/libs/css/bootstrap.min.css"/>
@@ -22,10 +22,10 @@
 
 <body>
 	<header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 bg-white border-bottom">
-		<h5 id="page-title" class="my-0 mr-md-3 font-weight-normal"><a href="/"><strong>HistoQc</strong></a></h5>
+		<h5 id="page-title" class="my-0 mr-md-3 font-weight-normal"><a href="/"><strong>QCSlideRepository</strong></a></h5>
 		<nav class="my-2 my-md-0 ml-md-3">
-			<a class="p-2 text-dark ml-md-3" href="/upload"> Upload </a>
 			<a class="p-2 text-dark ml-md-3" href="/gallery"> Gallery </a>
+			<a class="p-2 text-dark ml-md-3" href="/upload"> Upload </a>
 			<a class="p-2 text-dark ml-md-3" href="/about"> About </a>
 		</nav>
 	</header>
@@ -64,7 +64,7 @@
 							<td><input type="checkbox" name="checkList" id={{'check'+loop.index|string}}></td>
 							{% for item in file %}
 								{% if  loop.index == 1 %}
-									<td><img src="{{'static/files/thumbs/' + item }}" class="thumb"></td>
+									<td><img src="{{thumb_path + item}}" class="thumb"></td>
 								{% elif  loop.index == 2 %}
 									<td class="url"><a href="/download/{{item}}">{{item}} </a> </td>
 								{% else %}
@@ -77,11 +77,26 @@
 			</table>
 		</div>
 		<div class="mt-3 pt-3 mb-3 pb-3 ml-md-3 mr-md-3" id="download-btn-container">
-			<button id="download" class="btn btn-primary btn-block" onclick="download">Download</button>
+			<button id="download" class="btn btn-primary" onclick="download">Get Download Links</button>
 		</div>
-		<div class="container-fluid mt-3">
+		<div class="container-fluid mt-3" id="url-list-container">
+			<div id="download-instruction-block" class="mb-3">
+				<p>
+					Due to the large nature of the files, we provide the links below so that you may download them with more sophisticated tools which allow resuming, such as wget.
+				</p>
+				<p>
+					To use wget:
+				</p>
+				<div id="wget-code-block">
+					<p><code>
+						wget -c -i FILENAME_LIST
+					</code></p>
+				</div>
+			</div>
 			<textarea readonly rows="2" width="100%" id="downloadUrl"></textarea>
-			<input type="button" class="btn btn-primary btn-block" value="copy to clipboard" onclick="copyinput()"/>
+			<div class="mt-3 mb-3">
+				<input type="button" id="copy-btn" class="btn btn-primary" value="Copy to Clipboard" onclick="copyinput()"/>
+			</div>
 		</div>
 	</div>
 

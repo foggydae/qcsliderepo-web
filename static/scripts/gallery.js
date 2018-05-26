@@ -84,6 +84,7 @@ $("input[name='checkList']").on("click", function () {
 });
  
 $("#download").on("click", function () {
+	$("#download-instruction-block").css("display", "unset");
 	var urls = $(".selected td[class='url'] a");
 	if(urls.length == 0){
 		$("#downloadUrl").text("");

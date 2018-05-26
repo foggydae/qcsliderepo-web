@@ -56,6 +56,8 @@
 	<!-- The main application script -->
 	<script src="static/js/main.js"></script>
 	<!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->
+
+
 	<script src="../static/scripts/upload.js"></script>
 </head>
 
@@ -71,50 +73,13 @@
 
 	<div class="container mt-5">
 
-	    <form id="fileupload" action="//jquery-file-upload.appspot.com/" onsubmit="return valid(this)" method="POST" enctype="multipart/form-data">
-<!-- 			<div class="input-group mb-4 pb-4 mt-5" id="file-input">
-				<div class="custom-file">
-					<input type="file" name="file" multiple="multiple" class="custom-file-input" id="inputGroupFile01">
-					<label class="custom-file-label" for="inputGroupFile01">Choose file(s)</label>
-				</div>
-			</div>
- -->
-	        <!-- Redirect browsers with JavaScript disabled to the origin page -->
-	        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
-	        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-	        <div class="row fileupload-buttonbar">
-	            <div class="col-lg-7">
-	                <!-- The fileinput-button span is used to style the file input field as button -->
-	                <span class="btn btn-success fileinput-button">
-	                    <span>Add files...</span>
-	                    <input type="file" name="file" multiple>
-	                </span>
-	                <button type="submit" class="btn btn-primary start">
-	                    <span>Start upload</span>
-	                </button>
-	                <button type="reset" class="btn btn-warning cancel">
-	                    <span>Cancel upload</span>
-	                </button>
-	                <button type="button" class="btn btn-danger delete">
-	                    <span>Delete</span>
-	                </button>
-	                <input type="checkbox" class="toggle">
-	                <!-- The global file processing state -->
-	                <span class="fileupload-process"></span>
-	            </div>
-	            <!-- The global progress state -->
-	            <div class="col-lg-5 fileupload-progress fade">
-	                <!-- The global progress bar -->
-	                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-	                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
-	                </div>
-	                <!-- The extended global progress state -->
-	                <div class="progress-extended">&nbsp;</div>
-	            </div>
-	        </div>
-	        <!-- The table listing the files available for upload/download -->
-	        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+		<div id="upload-instruction-block" class="mb-3">
+	        <p>To upload, please fill in the below metadata, check the anonymized confirmation, and then click the "add files" button to select file(s).</p>
+	        <p>If you are uploading multiple files, the same metadata will be assigned to each of them.</p>
+			<p><strong>Notice: you won't be able to click on the "add files" button before you fill in the form and check the confirmation.</strong></p>
+		</div>
 
+	    <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
 
 			<div class="form-group row">
 				<label for="inputTissueType" class="col-sm-2 col-form-label">Tissue Type</label>
@@ -185,7 +150,9 @@
 					<input type="text" name="Email" class="form-control" id="inputEmail" placeholder="Your contact information (email)">
 				</div>
 			</div>
-			<div id="confirm-input" class="form-group mt-4 pt-4">
+			<!-- <input type="submit" value="Upload" disabled="disabled" id="submit" class="btn btn-primary btn-block"> -->
+
+			<div id="confirm-input" class="form-group mt-4 pt-4 mb-4 pb-4">
 				<div class="form-check">
 					<input class="form-check-input" name="confirm" type="checkbox" onclick="agree();" id="confirm">
 					<label class="form-check-label" for="confirm">
@@ -193,7 +160,44 @@
 					</label>
 				</div>
 			</div>
-			<input type="submit" value="Upload" disabled="disabled" id="submit" class="btn btn-primary btn-block">
+
+	        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+	        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/"></noscript>
+	        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+	        <div class="row fileupload-buttonbar">
+	            <div class="col-lg-7">
+	                <!-- The fileinput-button span is used to style the file input field as button -->
+	                <span class="btn btn-success fileinput-button">
+	                    <span>Add files...</span>
+	                    <input id="file-btn" type="file" name="file" disabled="disabled" multiple>
+	                </span>
+	                <button type="submit" class="btn btn-primary start">
+	                    <span>Start upload</span>
+	                </button>
+	                <button type="reset" class="btn btn-warning cancel">
+	                    <span>Cancel upload</span>
+	                </button>
+	                <button type="button" class="btn btn-danger delete">
+	                    <span>Delete</span>
+	                </button>
+	                <input type="checkbox" class="toggle">
+	                <!-- The global file processing state -->
+	                <span class="fileupload-process"></span>
+	            </div>
+	            <!-- The global progress state -->
+	            <div class="col-lg-5 fileupload-progress fade">
+	                <!-- The global progress bar -->
+	                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+	                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+	                </div>
+	                <!-- The extended global progress state -->
+	                <div class="progress-extended">&nbsp;</div>
+	            </div>
+	        </div>
+	        <!-- The table listing the files available for upload/download -->
+	        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+
+
 		</form>
 	</div>
 
@@ -201,7 +205,7 @@
 	<!-- The template to display files available for upload -->
 	<script id="template-upload" type="text/x-tmpl">
 	{% for (var i=0, file; file=o.files[i]; i++) { %}
-	    <tr class="template-upload fade">
+	    <tr class="template-upload">
 	        <td>
 	            <span class="preview"></span>
 	        </td>
@@ -233,7 +237,7 @@
 	<!-- The template to display files available for download -->
 	<script id="template-download" type="text/x-tmpl">
 	{% for (var i=0, file; file=o.files[i]; i++) { %}
-	    <tr class="template-download fade">
+	    <tr class="template-download">
 	        <td>
 	            <span class="preview">
 	                {% if (file.thumbnailUrl) { %}

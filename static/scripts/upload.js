@@ -1,8 +1,16 @@
 function agree() {
-	if(document.getElementById('confirm').checked)
-		document.getElementById('submit').disabled = false;
-	else
-		document.getElementById('submit').disabled = 'disabled';
+
+	if(valid() == false) {
+		alert("Please complete the table below.")
+		document.getElementById('file-btn').disabled = 'disabled';
+		document.getElementById('confirm').checked = false;
+	}
+	else if(document.getElementById('confirm').checked) {
+		document.getElementById('file-btn').disabled = false;
+	}
+	else {
+		document.getElementById('file-btn').disabled = 'disabled';
+	}
 }
 
 function validate_required(field, alerttxt) {
@@ -15,47 +23,47 @@ function validate_required(field, alerttxt) {
 	}
 }
 
-function valid(thisform) {
-	with (thisform) {
-		if (validate_required(Tissue,"Tissue must be filled out!") == false) {
-			Tissue.focus();
-			return false
-		}
-		if (validate_required(date,"Date must be filled out!") == false) {
-			date.focus();
-			return false
-		}
-		if (validate_required(magnification,"Magnification must be filled out!") == false) {
-			magnification.focus();
-			return false
-		}
-		if (validate_required(Artifacts,"Artifacts must be filled out!") == false) {
-			Artifacts.focus();
-			return false
-		}
-		if (validate_required(Stain,"Stain must be filled out!") == false) {
-			Stain.focus();
-			return false
-		}
-		if (validate_required(Comments,"Comments must be filled out!") == false) {
-			Comments.focus();
-			return false
-		}
-		if (validate_required(Scanner,"Scanner must be filled out!") == false) {
-			Scanner.focus();
-			return false
-		}
-		if (validate_required(Preparation,"Preparation must be filled out!") == false) {
-			Preparation.focus();
-			return false
-		}
-		if (validate_required(Specimen,"Specimen must be filled out!") == false) {
-			Specimen.focus();
-			return false
-		}
-		if (validate_required(Email,"Email must be filled out!") == false) {
-			Email.focus();
-			return false
-		}
+function valid() {
+	console.log("!")
+	console.log($("input[name=Tissue]").val())
+	if ($("input[name=Tissue]").val() == "") {
+		$("input[name=Tissue]").focus();
+		return false
+	}
+	if ($("input[name=date]").val() == "") {
+		$("input[name=date]").focus();
+		return false
+	}
+	if ($("input[name=magnification]").val() == "") {
+		$("input[name=magnification]").focus();
+		return false
+	}
+	if ($("input[name=Artifacts]").val() == "") {
+		$("input[name=Artifacts]").focus();
+		return false
+	}
+	if ($("input[name=Stain]").val() == "") {
+		$("input[name=Stain]").focus();
+		return false
+	}
+	if ($("input[name=Comments]").val() == "") {
+		$("input[name=Comments]").focus();
+		return false
+	}
+	if ($("input[name=Scanner]").val() == "") {
+		$("input[name=Scanner]").focus();
+		return false
+	}
+	if ($("input[name=Preparation]").val() == "") {
+		$("input[name=Preparation]").focus();
+		return false
+	}
+	if ($("input[name=Specimen]").val() == "") {
+		$("input[name=Specimen]").focus();
+		return false
+	}
+	if ($("input[name=Email]").val() == "") {
+		$("input[name=Email]").focus();
+		return false
 	}
 }

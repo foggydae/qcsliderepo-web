@@ -57,7 +57,7 @@ def gen_file_name(filename):
 	return filename
 
 
-def process(filename, metadata):
+def process(filename, metadata, mimetype):
 	file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 	name, extension = os.path.splitext(filename)
 	thumbname = '%s%s' % (name, '.png')
@@ -91,6 +91,8 @@ def process(filename, metadata):
 	mysql_db.insert(DB_TABLE, [Url, FileName, UploadDate, UploaderContactInfo, TissueType, SlideCreationDate, BaseMagnification, ArtifactsTypes,
 			   StainType, Comments, ImageSizeInPixels, ImageSizeInGB, FileType, Scanner, PreparationType, SpecimenType])
 
+	return uploadfile(name=filename, type=mimetype, size=ImageSizeInGB)
+
 
 @app.route('/')
 def histoqc():
@@ -103,25 +105,24 @@ def upload():
 		if 'file' not in request.files:
 			return jsonify({'code': -1, 'filename': '', 'msg': 'No file part.'})
 		
-		fileList = request.files.getlist('file')
-		print(fileList)
+		curfile = request.files['file']
 		metadata = request.form
-		for file in fileList:
-			if file.filename == '':
-				return jsonify({'code': -1, 'filename': '', 'msg': 'No selected file.'})
-			else:
-				try:
-					origin_file_name = file.filename
-					filename = secure_filename(origin_file_name)
-					filename = gen_file_name(filename)
 
-					file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-					process(filename, metadata)
+		if curfile.filename == '':
+			return jsonify({'code': -1, 'filename': '', 'msg': 'No selected file.'})
 
-				except Exception as e:
-					return jsonify({'code': -1, 'filename': filename, 'msg': 'Error occurred: %s' % e})
+		filename = secure_filename(curfile.filename)
+		filename = gen_file_name(filename)
+		mimetype = curfile.content_type
 
-		return redirect('/gallery')
+		if not allowed_file(curfile.filename):
+			result = uploadfile(name=filename, type=mimetype, size=0, not_allowed_msg="File type not allowed")
+		else:
+			# save file to disk
+			curfile.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+			result = process(filename, metadata, mimetype)
+		return jsonify({"files": [result.get_file()]})
+		# return redirect('/gallery')
 	else:
 		return render_template('upload.html')
 

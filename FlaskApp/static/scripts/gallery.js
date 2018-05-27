@@ -3,6 +3,8 @@ $(document).ready(function () {
 		"searching": true,
 		"bFilter": true,
 		"bPaginate": true,
+		"lengthMenu": [10, 25, 50, 75, 100],
+		"pageLength": 10,
 		"ordering": true,
 		"Info": true,
 		"autoWidth": false,
@@ -10,7 +12,6 @@ $(document).ready(function () {
 		"order": [
 			[0, null]
 		],
-		"pageLength": 3,
 		"columnDefs": [
 			{
 				orderable: false,

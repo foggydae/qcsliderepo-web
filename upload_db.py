@@ -14,12 +14,12 @@ thumb_path = "./FlaskApp/static/data/thumbnail/"
 slide_creation_date = datetime.date.today().strftime("%m/%d/%Y")
 
 
-DB_NAME = 'histoqc'
-DB_IP = 'localhost'
-DB_PORT = 3306
-DB_USER = 'root'
-DB_PASSWORD = 'histoqcweb'
-DB_TABLE = 'file'
+db_name = 'histoqc'
+db_ip = 'localhost'
+db_port = 3306
+db_user = 'root'
+db_password = 'histoqcweb'
+db_table = 'file'
 
 db = MySQLdb.connect(host=db_ip, port=db_port, user=db_user, passwd=db_password, db=db_name)
 cursor = db.cursor()
@@ -29,7 +29,7 @@ db.set_character_set('utf8')
 file_list = pd.read_csv('./histoqc_upload.txt', sep='\t', header=0)
 
 
-db_command = "INSERT INTO file VALUES"
+db_command = "INSERT INTO " + db_table + " VALUES"
 
 for i, row in file_list.iterrows():
         

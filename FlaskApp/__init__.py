@@ -30,8 +30,8 @@ ALLOWED_EXTENSIONS = set(['svs', 'tif', 'ndpi', 'vms', 'vmu', 'scn', 'mrxs', 'ti
 DB_NAME = 'histoqc'
 DB_IP = 'localhost'
 DB_PORT = 3306
-DB_USER = 'ren.zuo'
-DB_PASSWORD = 'ZQTTzr1995'
+DB_USER = 'root'
+DB_PASSWORD = 'histoqcweb'
 DB_TABLE = 'file'
 
 mysql_db = MysqlTool(DB_NAME, DB_IP, DB_PORT, DB_USER, DB_PASSWORD)

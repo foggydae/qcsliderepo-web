@@ -3,9 +3,14 @@ import os
 import MySQLdb
 import datetime
 import re
+import openslide
+from skimage import io
+import numpy as np
+import sys
 
 
-data_path = ""
+data_path = "./FlaskApp/static/data/"
+thumb_path = "./FlaskApp/static/data/thumbnail/"
 slide_creation_date = datetime.date.today().strftime("%m/%d/%Y")
 
 
@@ -31,6 +36,7 @@ for i, row in file_list.iterrows():
     cur_file = row["filename"]
     attributes = []
     command = "("
+    thumb_file = '%s%s' % (os.path.splitext(cur_file)[0], '.png')
     
     comments = row["comment"]
     result = re.search(r'Date = ([0-9]{2}/[0-9]{2}/)([0-9]{2})', comments)
@@ -39,7 +45,7 @@ for i, row in file_list.iterrows():
     else:
         cur_creation_date = slide_creation_date
         
-    attributes.append('%s%s' % (os.path.splitext(cur_file)[0], '.png'))
+    attributes.append(thumb_file)
     attributes.append(cur_file)
     attributes.append(datetime.date.today().strftime("%m/%d/%Y"))
     attributes.append("axj232@case.edu")
@@ -69,6 +75,10 @@ for i, row in file_list.iterrows():
     else:
         db_command += ","
 
+    fname = data_path + cur_file
+    osh = openslide.OpenSlide(fname)
+    thumb = np.array(osh.get_thumbnail((500,500)))
+    io.imsave(thumb_path + thumb_file, thumb)
 
 cursor.execute(db_command)
 db.commit()

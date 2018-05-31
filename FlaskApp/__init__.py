@@ -81,7 +81,7 @@ def process(filename, metadata, mimetype):
 	ArtifactsTypes = metadata.get('Artifacts')
 	StainType = metadata.get('Stain')
 	Comments =  metadata.get('Comments')
-	ImageSizeInPixels = str(height)+'x'+str(width)
+	ImageSizeInPixels = str(width)+'x'+str(height)
 	ImageSizeInGB = fsize
 	FileType = os.path.splitext(filename)[1]
 	Scanner = metadata.get('Scanner')

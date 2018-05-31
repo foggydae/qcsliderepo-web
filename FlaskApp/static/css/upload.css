@@ -1,5 +1,26 @@
-html, body {
-  line-height: 1; /* same as bootstrap.css */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    padding-top: 5px;
+    height: 60px;
+}
+
+.license-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #file-input {
